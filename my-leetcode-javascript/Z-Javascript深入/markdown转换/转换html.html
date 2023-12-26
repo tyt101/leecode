@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <input type="file" id="md-file" accept=".md">
+  <div id="result-container"></div>
+  <script src="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js"></script>
+  <script>
+    function convertMarkdownToHtml(markdownText) {
+      const md = window.markdownit();
+      return md.render(markdownText);
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const mdFileInput = document.getElementById("md-file");
+      const resultContainer = document.getElementById("result-container");
+      const mdRenderer = window.markdownit();
+
+      mdFileInput.addEventListener("change", handleFileUpload);
+
+      function handleFileUpload(event) {
+        const file = event.target.files[0];
+        
+        if (file) {
+          const reader = new FileReader();
+
+          reader.onload = function(e) {
+            const markdownContent = e.target.result;
+            const htmlContent = mdRenderer.render(markdownContent);
+
+            resultContainer.innerHTML = htmlContent;
+          };
+
+          reader.readAsText(file);
+        }
+      }
+  });
+  </script>
+</body>
+</html>

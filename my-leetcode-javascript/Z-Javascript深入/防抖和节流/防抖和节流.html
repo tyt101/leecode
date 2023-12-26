@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    #container {
+      width: 400px;
+      height: 200px;
+      background-color: black;
+      color: white;
+      margin: 100px auto;
+    }
+  </style>
+</head>
+<body>
+  <div id="container"></div>
+
+  <script src="./防抖和节流 .js"></script>
+  <script>
+    let count = 1
+    const container = document.querySelector('#container')
+
+    function getUserAction() {
+      container.innerHTML = count++
+    }
+
+    container.onmousemove = throttle1(getUserAction, 1000)
+  </script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Markdown Parsing</title>
+  <!-- 引入 markdown-it.js、mermaid.js 和 mathjax -->
+  <script src="https://cdn.jsdelivr.net/npm/markdown-it@12/dist/markdown-it.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.0/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div id="markdown-content">
+    <!-- Markdown 内容将在这里显示 -->
+  </div>
+
+  <script>
+    // 创建 markdown-it 解析器
+    const md = window.markdownit();
+
+    // 自定义插件处理图表和数学方程式
+    md.use(function customPlugin(md) {
+      md.renderer.rules.fence_custom = function (tokens, idx) {
+        const token = tokens[idx];
+        const lang = token.info.trim();
+        const code = token.content.trim();
+
+        if (lang === 'chart') {
+          return '<div class="chart">' + code + '</div>';
+        } else if (lang === 'texmath') {
+          return '<div class="texmath">' + code + '</div>';
+        }
+
+        // 默认处理
+        return '<pre><code>' + md.utils.escapeHtml(code) + '</code></pre>';
+      };
+    });
+
+    // 要解析的 Markdown 文本
+    const markdownText = `
+      # 示例文档
+
+      \`\`\`mermaid
+        %% Example of sequence diagram
+          sequenceDiagram
+            Alice->>Bob: Hello Bob, how are you?
+            alt is sick
+            Bob->>Alice: Not so good :(
+            else is well
+            Bob->>Alice: Feeling fresh like a daisy
+            end
+            opt Extra response
+            Bob->>Alice: Thanks for asking
+            end
+        \`\`\`
+
+    `;
+
+    // 将 Markdown 文本渲染为 HTML
+    const result = md.render(markdownText);
+
+    // 在页面中显示渲染结果
+    const markdownContent = document.getElementById('markdown-content');
+    markdownContent.innerHTML = result;
+
+    // 渲染数学方程式
+    MathJax.typesetPromise([markdownContent]);
+  </script>
+</body>
+</html>

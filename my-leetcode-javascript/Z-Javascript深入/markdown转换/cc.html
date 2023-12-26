@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Markdown to HTML with Mermaid Chart</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vditor@3.8.5/dist/index.css">
+</head>
+<body>
+    <!-- Vditor编辑器容器 -->
+    <div id="editor"></div>
+
+    <!-- 转换为HTML并下载按钮 -->
+    <button id="convertAndDownloadButton">Convert to HTML and Download</button>
+
+    <!-- 引入 markdown-it 和 mermaid 相关的 JavaScript 资源 -->
+    <script src="https://cdn.jsdelivr.net/npm/markdown-it@12/dist/markdown-it.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+    <script>
+        // 创建Vditor编辑器实例
+        const vditor = new Vditor('editor');
+
+        // 转换为HTML并下载按钮点击事件
+        const convertAndDownloadButton = document.getElementById('convertAndDownloadButton');
+        convertAndDownloadButton.addEventListener('click', () => {
+            // 获取渲染后的Markdown内容
+            const markdownContent = vditor.getValue();
+
+            // 使用 markdown-it 和 markdown-it-mermaid 插件进行渲染
+            const md = window.markdownit();
+            md.use(window.markdownitMermaid);
+
+            // 将Markdown转换为HTML
+            const renderedHtml = md.render(markdownContent);
+
+            // 创建Blob对象
+            const blob = new Blob([renderedHtml], { type: 'text/html' });
+
+            // 创建下载链接
+            const downloadLink = document.createElement('a');
+            downloadLink.href = URL.createObjectURL(blob);
+            downloadLink.download = 'rendered_markdown.html';
+
+            // 模拟点击链接以触发下载
+            downloadLink.click();
+
+            // 释放URL对象
+            URL.revokeObjectURL(downloadLink.href);
+        });
+    </script>
+</body>
+</html>

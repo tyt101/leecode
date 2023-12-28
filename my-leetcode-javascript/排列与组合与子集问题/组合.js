@@ -40,22 +40,22 @@ var subsetsWithDup = function(nums) {
 
   // 回溯算法
   const backtrack = (nums, start) => {
-      // 前序位置，每个节点的值都是一个子集
-      res.push([...track]);
+    // 前序位置，每个节点的值都是一个子集
+    res.push([...track]);
 
-      // 遍历子集树枝
-      for (let i = start; i < nums.length; i++) {
-          // 剪枝逻辑，值相同的相邻树枝，只遍历第一条
-          if (i > start && nums[i] === nums[i - 1]) {
-              continue;
-          }
-          // 选择当前元素，加入路径数组
-          track.push(nums[i]);
-          // 向子节点递归
-          backtrack(nums, i + 1);
-          // 回溯，撤销选择
-          track.pop();
-      }
+    // 遍历子集树枝
+    for (let i = start; i < nums.length; i++) {
+        // 剪枝逻辑，值相同的相邻树枝，只遍历第一条
+        if (i > start && nums[i] === nums[i - 1]) {
+            continue;
+        }
+        // 选择当前元素，加入路径数组
+        track.push(nums[i]);
+        // 向子节点递归
+        backtrack(nums, i + 1);
+        // 回溯，撤销选择
+        track.pop();
+    }
   }
 
   backtrack(nums, 0);

@@ -9,8 +9,8 @@ const subSets = (nums) => {
  const res = []
  const track = []
 
-
  const backtrack = (start) => {
+
    res.push([...track])
    for(let i = start; i < nums.length; i++) {
      track.push(nums[i])
@@ -19,6 +19,7 @@ const subSets = (nums) => {
 
      track.pop()
    }
+   
  }
 
 

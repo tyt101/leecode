@@ -9,13 +9,26 @@
 - 在同一个数组中，所有元素的类型都必须相同（都为 int、double 等）。
 
 ### Example
-
+#### which sort way is used by sort function? sort方法采用的什么排序？
 #### array sort 冒泡排序
 #### array sort 选择排序
 #### array sort 插入排序
 #### array sort 归并排序
 #### array sort 快速排序
+```javascript
+function quickSort(array) {
+    // ----> base case 基线条件
+    if(array.length < 2) return array       
 
+    // ----> recursive case 递归条件
+    let pivot = array[0]
+
+    let left = array.slice(1).filter(item => item <= pivot)
+    let right = array.slice(1).filter(item => item > pivot)
+
+    return [...quickSort(left), pivot, ...quickSort(right)]
+}
+```
 #### chain sort 链表的归并排序
 ```javascript
 /**
@@ -119,3 +132,5 @@ var insertionSortList = function(head) {
     return dummyHead.next
 };
 ```
+
+### when to use chain dummyHead? 什么时候使用dummy头节点?

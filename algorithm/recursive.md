@@ -42,6 +42,13 @@ function factTailCall(n, sum = 1) {
   }
 }
 ```
+
+
+### D&C Algorithm (分治算法)
+```
+1. D&C 将问题逐步分解。使用 D&C 处理列表时，基线条件很可能是空数组或只包含一个元素的数组。
+2. 
+```
 ### special example
 
 

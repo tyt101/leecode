@@ -10,12 +10,111 @@
 
 ### Example
 #### which sort way is used by sort function? sort方法采用的什么排序？
-#### array sort 冒泡排序
-#### array sort 选择排序
-#### array sort 插入排序
-#### array sort 归并排序
-#### array sort 快速排序
+```
+1. 默认线将元素转换为字符串，然后再进行排序
+2. 排序算法：
+    2.1 当n <= 10; 采用插入排序
+    2.2 当n > 10; 采用三路快速排序
+    2.3 当10 < n <= 1000; 采用中位数作为哨兵元素
+    2.4 当n > 1000; 每隔200-215个元素挑出一个元素，放到一个新数组，然后对它排序，找到中间位置的数，以此作为中位数。
+```
+#### Why does Google prioritize Quick Sort over Merge Sort? 为什么Google优先使用快速排序而不是归并排序
+```
+1. 归并不是原地排序算法，空间复杂度为O(n)
+2. 归并排序和快速排序都是O(nlogn), 但归并排序的基数大。
+注：一般的简单查找和二分查找，常量基数无关紧要，因为列表很长时，O(logn)的速度远快于O(n)。
+注：快速排序，最好随机选择用作基准值的元素。平均时间在O(nlogn)
+```
+
+#### array sort 数组的冒泡排序
 ```javascript
+function bubbleSort(arr) {
+  let len = arr.length
+  for(let i = 0; i < len; i++) {
+    for(let j = 0; j < len - 1 - i; j++) {
+      if(arr[j+1] < arr[j]) {
+        [arr[j], arr[j+1]] = [arr[j+1], arr[j]]
+      }
+    }
+  }
+  return arr
+}
+```
+
+#### array sort 数组的选择排序
+```javascript
+function selectSort(arr) {
+  let len = arr.length
+  for(let i = 0; i < len - 1; i++) {
+    let minIndex = i
+    for(let j = i + 1; j < len; j++) {
+      if(arr[j] < arr[minIndex]) {
+        minIndex = j
+      }
+    }
+    if(minIndex !== i) {
+      [arr[i], arr[minIndex]] = [arr[minIndex], arr[i]]
+    }
+  }
+  return arr
+}
+```
+
+#### array sort 数组的插入排序
+```javascript
+function insertSort(arr) {
+  let len = arr.length
+  for(let i = 1; i < len; i++) {
+    let j = i
+    let target = arr[j]
+    while(arr[j-1] > target && j >=0) {
+      arr[j] = arr[j - 1]
+      j--
+    }
+    arr[j] = target
+  }
+  return arr
+}
+```
+
+#### array sort 数组的归并排序
+```javascript
+function mergeSort(arr) {
+  if(arr.length < 2) return arr
+  let index = Math.floor(arr.length / 2)
+
+  return merge(mergeSort(arr.slice(0, index)), mergeSort(arr.slice(index)))
+}
+
+
+function merge(left, right) {
+  let res = []
+  let i = 0;
+  let j = 0;
+  while(i < left.length && j < right.length) {
+    if(left[i] < right[j]) {
+      res.push(left[i])
+      i++
+    } else {
+      res.push(right[j])
+      j++
+    }
+  }
+
+  if(i < left.length) {
+    res = res.concat(...left.slice(i))
+  }
+  if(j < right.length) {
+    res = res.concat(...right.slice(j))
+  }
+
+  return res
+}
+```
+
+#### array sort 数组的快速排序
+```javascript
+// 1
 function quickSort(array) {
     // ----> base case 基线条件
     if(array.length < 2) return array       
@@ -28,7 +127,47 @@ function quickSort(array) {
 
     return [...quickSort(left), pivot, ...quickSort(right)]
 }
+
+// 2
+function quickSort(arr, left=0, right=arr.length - 1) {
+  if(arr.length < 2) return arr
+  let passIndex = partion(arr, left, right)
+  if(left < passIndex - 1) {
+    quickSort(arr, left, passIndex - 1)
+  }
+  if(passIndex < right) {
+    quickSort(arr, passIndex, right)
+  }
+  return arr
+}
+
+function partion(arr, left, right) {
+  let pivot = arr[Math.floor(left + (right - left) / 2)]
+  let p = left
+  let q = right
+  while(p <= q) {
+    while(arr[p] < pivot) {
+      p++
+    }
+
+    while(arr[q] > pivot) {
+      q--
+    }
+
+    if(p <= q) {
+      swap(arr, p, q)
+      p++
+      q--
+    }
+  }
+  return p
+}
+
+function swap(arr, p, q) {
+  [arr[p], arr[q]] =[arr[q], arr[p]]
+}
 ```
+
 #### chain sort 链表的归并排序
 ```javascript
 /**
@@ -133,4 +272,3 @@ var insertionSortList = function(head) {
 };
 ```
 
-### when to use chain dummyHead? 什么时候使用dummy头节点?
